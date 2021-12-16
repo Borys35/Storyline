@@ -1,27 +1,20 @@
-import {
-  GetStaticPaths,
-  GetStaticPathsContext,
-  GetStaticProps,
-  GetStaticPropsContext,
-  NextPage,
-} from "next";
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Button from "../../components/button";
 import Layout from "../../components/layout";
 import { User } from "../../interfaces";
 import withAuth from "../../lib/hoc/withAuth";
-import { getUser, getUsers } from "../../lib/users";
+import { getUser } from "../../lib/users";
 
 interface Props {
   user: User;
 }
 
-export const getStaticProps: GetStaticProps = async (
-  context: GetStaticPropsContext
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
 ) => {
-  const { params } = context;
-  const id = params?.id?.toString();
+  const id = context.params?.id?.toString();
 
   if (!id)
     return {
@@ -36,24 +29,46 @@ export const getStaticProps: GetStaticProps = async (
 
   return {
     props: { user },
-    revalidate: 30,
   };
 };
 
-export const getStaticPaths: GetStaticPaths = async (
-  context: GetStaticPathsContext
-) => {
-  const users = (await getUsers()) || [];
+// export const getStaticProps: GetStaticProps = async (
+//   context: GetStaticPropsContext
+// ) => {
+//   const { params } = context;
+//   const id = params?.id?.toString();
 
-  const paths = users.map((user) => ({
-    params: { id: user.id.toString() },
-  }));
+//   if (!id)
+//     return {
+//       notFound: true,
+//     };
 
-  return {
-    paths,
-    fallback: false,
-  };
-};
+//   const user = await getUser(id);
+//   if (!user)
+//     return {
+//       notFound: true,
+//     };
+
+//   return {
+//     props: { user },
+//     revalidate: 30,
+//   };
+// };
+
+// export const getStaticPaths: GetStaticPaths = async (
+//   context: GetStaticPathsContext
+// ) => {
+//   const users = (await getUsers()) || [];
+
+//   const paths = users.map((user) => ({
+//     params: { id: user.id.toString() },
+//   }));
+
+//   return {
+//     paths,
+//     fallback: false,
+//   };
+// };
 
 const Profile: NextPage<Props> = ({ user }) => {
   const { id, name, picture } = user as any;

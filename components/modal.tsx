@@ -14,7 +14,7 @@ const Modal: FC<ModalProps> = ({ isOpen, setOpen, children }) => {
     const classNames = ["overflow-hidden", "pr-4"];
     if (isOpen) return body.classList.add(...classNames);
     body.classList.remove(...classNames);
-  }, [isOpen]);
+  }, [isOpen]); //eslint-disable-line
 
   if (!isOpen) return null;
 

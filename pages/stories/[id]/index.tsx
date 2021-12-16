@@ -1,12 +1,6 @@
 import axios from "axios";
 import produce from "immer";
-import {
-  GetStaticPaths,
-  GetStaticPathsContext,
-  GetStaticProps,
-  GetStaticPropsContext,
-  NextPage,
-} from "next";
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -16,18 +10,17 @@ import Modal from "../../../components/modal";
 import CommentSection from "../../../components/stories/comment-section";
 import LikeItem from "../../../components/stories/like-item";
 import { StoryFull } from "../../../interfaces";
-import { getStories, getStory } from "../../../lib/stories";
+import { getStory } from "../../../lib/stories";
 
 interface Props {
   id: string;
   story: StoryFull;
 }
 
-export const getStaticProps: GetStaticProps = async (
-  context: GetStaticPropsContext
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
 ) => {
-  const { params } = context;
-  const id = params?.id?.toString();
+  const id = context.params?.id?.toString();
 
   if (!id)
     return {
@@ -42,22 +35,44 @@ export const getStaticProps: GetStaticProps = async (
 
   return {
     props: { story },
-    revalidate: 30,
   };
 };
 
-export const getStaticPaths: GetStaticPaths = async (
-  context: GetStaticPathsContext
-) => {
-  const stories = (await getStories()) || [];
+// export const getStaticProps: GetStaticProps = async (
+//   context: GetStaticPropsContext
+// ) => {
+//   const { params } = context;
+//   const id = params?.id?.toString();
 
-  const paths = stories.map((story) => ({ params: { id: story.id } }));
+//   if (!id)
+//     return {
+//       notFound: true,
+//     };
 
-  return {
-    paths,
-    fallback: false,
-  };
-};
+//   const story = await getStory(id);
+//   if (!story)
+//     return {
+//       notFound: true,
+//     };
+
+//   return {
+//     props: { story },
+//     revalidate: 30,
+//   };
+// };
+
+// export const getStaticPaths: GetStaticPaths = async (
+//   context: GetStaticPathsContext
+// ) => {
+//   const stories = (await getStories()) || [];
+
+//   const paths = stories.map((story) => ({ params: { id: story.id } }));
+
+//   return {
+//     paths,
+//     fallback: false,
+//   };
+// };
 
 const ThumbUp = () => (
   <svg

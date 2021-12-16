@@ -10,6 +10,7 @@ interface LayoutProps {
 
 const Layout: FC<LayoutProps> = ({ name, children }) => {
   const { status } = useSession();
+  const loading = status === "loading";
 
   if (status === "loading") return <div>Loading</div>;
 
@@ -18,11 +19,15 @@ const Layout: FC<LayoutProps> = ({ name, children }) => {
       <Head>
         <title>{name} | Storyline</title>
       </Head>
-      <>
-        <Navbar />
-        <div className="flex-1 pt-10 px-10">{children}</div>
-        <Footer />
-      </>
+      {!loading ? (
+        <>
+          <Navbar />
+          <div className="flex-1 pt-10 px-10">{children}</div>
+          <Footer />
+        </>
+      ) : (
+        <p className="justify-self-center self-center">Loading</p>
+      )}
     </main>
   );
 };

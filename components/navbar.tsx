@@ -61,7 +61,7 @@ const Navbar: FC = () => {
       </div>
 
       {open && (
-        <div className="flex flex-col md:hidden gap-4 absolute top-full bg-purple-500 left-0 right-0 px-10 py-4 items-start">
+        <div className="flex flex-col md:hidden gap-4 absolute z-50 top-full bg-purple-500 left-0 right-0 px-10 py-4 items-start">
           {navbarBody}
         </div>
       )}

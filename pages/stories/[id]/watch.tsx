@@ -1,47 +1,62 @@
 import axios from "axios";
-import {
-  GetStaticPaths,
-  GetStaticPathsContext,
-  GetStaticProps,
-  GetStaticPropsContext,
-  NextPage,
-} from "next";
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import React, { useEffect, useState } from "react";
 import Button from "../../../components/button";
 import Layout from "../../../components/layout";
-import { getStories, getStory } from "../../../lib/stories";
-import { StoryFormInfo } from "../../../reducers/story-reducer";
+import { StoryForm } from "../../../interfaces";
+import { getStory } from "../../../lib/stories";
 
 interface Props {
   id: string;
-  story: StoryFormInfo;
+  story: StoryForm;
 }
 
-export const getStaticProps: GetStaticProps = async (
-  context: GetStaticPropsContext
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
 ) => {
-  const { params } = context;
-  const id = params?.id as string;
+  const id = context.params?.id?.toString();
+
+  if (!id)
+    return {
+      notFound: true,
+    };
 
   const story = await getStory(id);
+  if (!story)
+    return {
+      notFound: true,
+    };
 
   return {
     props: { id, story },
   };
 };
 
-export const getStaticPaths: GetStaticPaths = async (
-  context: GetStaticPathsContext
-) => {
-  const stories = await getStories();
+// export const getStaticProps: GetStaticProps = async (
+//   context: GetStaticPropsContext
+// ) => {
+//   const { params } = context;
+//   const id = params?.id as string;
 
-  const paths = stories.map((story) => ({ params: { id: story.id } }));
+//   const story = await getStory(id);
 
-  return {
-    paths,
-    fallback: false,
-  };
-};
+//   return {
+//     props: { id, story },
+//   };
+// };
+
+// export const getStaticPaths: GetStaticPaths = async (
+//   context: GetStaticPathsContext
+// ) => {
+//   const stories = (await getStories()) || [];
+
+//   const paths = stories.map((story) => ({ params: { id: story.id } }));
+
+//   return {
+//     paths,
+//     fallback: false,
+//   };
+// };
 
 const WatchPage: NextPage<Props> = ({ id, story }) => {
   const [index, setIndex] = useState(0);
@@ -61,14 +76,14 @@ const WatchPage: NextPage<Props> = ({ id, story }) => {
   useEffect(() => {
     // ADD VIEW
     axios.put(`/api/stories/${id}/add-view`);
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (!watched) return;
 
     // ADD WATCHED VIEW
     axios.put(`/api/stories/${id}/add-watched`);
-  }, [watched]);
+  }, [watched, id]);
 
   return (
     <Layout name={!watched ? "Watching..." : "Watched"}>

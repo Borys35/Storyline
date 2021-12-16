@@ -1,24 +1,72 @@
+import axios from "axios";
 import { useRouter } from "next/router";
-import { FC } from "react";
+import { FC, useEffect } from "react";
+import useSWRInfinite from "swr/infinite";
+import useOnScreen from "../../hooks/useOnScreen";
 import { StoryFull } from "../../interfaces";
 import StoryItem from "./story-item";
 
 interface Props {
-  stories: StoryFull[];
+  pageSize: number;
+  pageSort: string;
 }
 
-const StoriesGrid: FC<Props> = ({ stories }) => {
-  const router = useRouter();
+const getKey = (
+  pageIndex: number,
+  previousPageData: any,
+  size: number,
+  sort?: string
+) => {
+  if (previousPageData && !previousPageData.stories.length) return null;
 
-  function handleStoryClick(id: string) {
+  if (sort) return `/api/stories?page=${pageIndex}&limit=${size}&sort=${sort}`;
+
+  return `/api/stories?page=${pageIndex}&limit=${size}`;
+};
+
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+
+const StoriesGrid: FC<Props> = ({ pageSize, pageSort }) => {
+  const router = useRouter();
+  const { data, error, size, setSize } = useSWRInfinite(
+    (...args) => getKey(...args, pageSize, pageSort),
+    fetcher
+  );
+  const [isIntersecting, dummyRef] = useOnScreen({ rootMargin: "100px" });
+  const stories: StoryFull[] = [];
+  data && data.forEach((d) => stories.push(...d.stories));
+
+  function handleStoryClick(id?: string) {
+    if (!id) return;
+
     router.push(`/stories/${id}`);
   }
 
+  useEffect(() => {
+    setSize(size + 1);
+  }, [isIntersecting]); // eslint-disable-line
+
+  console.log("data", data);
+
   return (
     <div className="grid grid-cols-4 gap-4">
-      {stories.map(({ name, id }, i) => (
-        <StoryItem key={i} name={name} onClick={() => handleStoryClick(id)} />
-      ))}
+      {data ? (
+        stories.map(({ name, id }, i) => (
+          <StoryItem key={i} name={name} onClick={() => handleStoryClick(id)} />
+        ))
+      ) : (
+        <>
+          <div className="bg-gray-500 h-96"></div>
+          <div className="bg-gray-500  h-96"></div>
+          <div className="bg-gray-500  h-96"></div>
+          <div className="bg-gray-500  h-96"></div>
+          <div className="bg-gray-500  h-96"></div>
+          <div className="bg-gray-500  h-96"></div>
+          <div className="bg-gray-500  h-96"></div>
+          <div className="bg-gray-500  h-96"></div>
+        </>
+      )}
+      <div ref={dummyRef}></div>
     </div>
   );
 };

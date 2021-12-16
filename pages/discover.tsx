@@ -1,87 +1,56 @@
-import axios from "axios";
-import { GetStaticProps, NextPage } from "next";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
-import React, { ChangeEvent, useEffect } from "react";
-import { SWRConfig } from "swr";
-import useSWRInfinite from "swr/infinite";
+import React, { ChangeEvent } from "react";
 import StoriesGrid from "../components/discover/stories-grid";
 import Layout from "../components/layout";
-import useOnScreen from "../hooks/useOnScreen";
-import { StoryFull } from "../interfaces";
-import { getStories } from "../lib/stories";
 
-const PAGE_SIZE = 4;
+const PAGE_SIZE = 8;
 
-interface Props {
-  fallback: any;
-}
+interface Props {}
 
-export const getStaticProps: GetStaticProps = async () => {
-  const stories = await getStories(0, PAGE_SIZE);
+// export const getStaticProps: GetStaticProps = async (
+//   context: GetStaticPropsContext
+// ) => {
+//   const sort = context.params?.sort?.toString();
+//   const stories = await getStories(0, PAGE_SIZE, sort);
 
-  return {
-    props: { fallback: { "/api/stories": { stories } } },
-    revalidate: 60,
-  };
-};
+//   console.log("discover stories", stories);
 
-const getKey = (pageIndex: number, previousPageData: any, sort?: string) => {
-  if (previousPageData && !previousPageData.stories.length) return null;
+//   return {
+//     props: { fallback: { "/api/stories": [{ stories }] } },
+//     revalidate: 60,
+//   };
+// };
 
-  if (sort)
-    return `/api/stories?page=${pageIndex}&limit=${PAGE_SIZE}&sort=${sort}`;
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const stories = await getStories(0, PAGE_SIZE);
 
-  return `/api/stories?page=${pageIndex}&limit=${PAGE_SIZE}`;
-};
+//   return {
+//     props: { fallback: { "/api/stories": { stories } } },
+//   };
+// };
 
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
-
-const Discover: NextPage<Props> = ({ fallback }) => {
+const Discover: NextPage<Props> = () => {
   const router = useRouter();
-  const { sort } = router.query;
-  const { data, error, size, setSize } = useSWRInfinite(
-    (...args) => getKey(...args, sort?.toString()),
-    fetcher
-  );
-  // const dummyRef = useRef<HTMLDivElement>(null);
-  const [isIntersecting, dummyRef] = useOnScreen({ rootMargin: "100px" });
-  const stories: StoryFull[] = [];
-  data && data.forEach((d) => stories.push(...d.stories));
+  const sort = router.query.sort?.toString() || "latest";
 
   function handleChangeSort(e: ChangeEvent<HTMLSelectElement>) {
     router.push({ query: { sort: e.target.value } });
   }
 
-  useEffect(() => {
-    setSize(size + 1);
-  }, [isIntersecting]); // eslint-disable-line
-
-  // if (!data) return <div>Error or loading</div>;
-
   return (
-    <SWRConfig value={{ fallback }}>
-      <Layout name="Discover">
-        <select
-          className="outline-none focus:ring-4 rounded-lg px-4 py-2"
-          defaultValue={sort}
-          onChange={handleChangeSort}
-        >
-          <option value="latest">Latest</option>
-          <option value="oldest">Oldest</option>
-          <option value="appreciations">Most Appreciated</option>
-        </select>
-        {data ? (
-          <>
-            <StoriesGrid stories={stories} />
-            <div ref={dummyRef}></div>
-          </>
-        ) : error ? (
-          "Error"
-        ) : (
-          "Loading"
-        )}
-      </Layout>
-    </SWRConfig>
+    <Layout name="Discover">
+      <select
+        className="outline-none focus:ring-4 rounded-lg px-4 py-2"
+        defaultValue={sort}
+        onChange={handleChangeSort}
+      >
+        <option value="latest">Latest</option>
+        <option value="oldest">Oldest</option>
+        <option value="appreciations">Most Appreciated</option>
+      </select>
+      <StoriesGrid pageSize={PAGE_SIZE} pageSort={sort} />
+    </Layout>
   );
 };
 

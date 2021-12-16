@@ -54,6 +54,7 @@ const SlidesStepView = React.forwardRef<any, Props>(
 
       dispatch(deleteStorySlide(i));
       if (index === i) setIndex(0);
+      if (index === slides.length - 1) setIndex(index - 1);
     }
 
     function handleChangeSlide(i: number) {
