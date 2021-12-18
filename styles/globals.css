@@ -13,3 +13,26 @@ body {
 * {
   box-sizing: border-box;
 }
+
+@layer components {
+  .stories-grid {
+    @apply grid gap-4;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-auto-rows: 20rem;
+  }
+
+  .bg-skeleton {
+    @apply bg-gray-500;
+
+    animation: bg 1s alternate infinite ease-in-out;
+  }
+}
+
+@keyframes bg {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 0.8;
+  }
+}

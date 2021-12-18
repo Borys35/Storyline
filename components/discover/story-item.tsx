@@ -6,7 +6,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 const StoryItem: FC<Props> = ({ name, ...props }) => {
   return (
-    <div className="h-96 p-4 bg-red-300" {...props}>
+    <div className="p-4 bg-red-300" {...props}>
       {name}
     </div>
   );

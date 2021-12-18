@@ -46,28 +46,23 @@ const StoriesGrid: FC<Props> = ({ pageSize, pageSort }) => {
     setSize(size + 1);
   }, [isIntersecting]); // eslint-disable-line
 
-  console.log("data", data);
-
   return (
-    <div className="grid grid-cols-4 gap-4">
-      {data ? (
-        stories.map(({ name, id }, i) => (
-          <StoryItem key={i} name={name} onClick={() => handleStoryClick(id)} />
-        ))
-      ) : (
-        <>
-          <div className="bg-gray-500 h-96"></div>
-          <div className="bg-gray-500  h-96"></div>
-          <div className="bg-gray-500  h-96"></div>
-          <div className="bg-gray-500  h-96"></div>
-          <div className="bg-gray-500  h-96"></div>
-          <div className="bg-gray-500  h-96"></div>
-          <div className="bg-gray-500  h-96"></div>
-          <div className="bg-gray-500  h-96"></div>
-        </>
-      )}
+    <>
+      <div className="stories-grid">
+        {data
+          ? stories.map(({ name, id }, i) => (
+              <StoryItem
+                key={i}
+                name={name}
+                onClick={() => handleStoryClick(id)}
+              />
+            ))
+          : Array(12)
+              .fill(null)
+              .map((_, i) => <div key={i} className="bg-skeleton"></div>)}
+      </div>
       <div ref={dummyRef}></div>
-    </div>
+    </>
   );
 };
 

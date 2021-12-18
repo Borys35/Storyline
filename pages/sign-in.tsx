@@ -56,12 +56,14 @@ const SignIn: NextPage = () => {
           label="E-mail"
           inputProps={register("email")}
           error={errors.email}
+          type="email"
         />
         <Field
           label="Password"
           inputProps={register("password")}
           tip="Password will be hashed"
           error={errors.password}
+          type="password"
         />
         <Button primary>Sign in</Button>
       </Form>

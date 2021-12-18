@@ -63,18 +63,21 @@ const SignUp: NextPage = () => {
           label="E-mail"
           inputProps={register("email")}
           error={errors.email}
+          type="email"
         />
         <Field
           label="Password"
           inputProps={register("password")}
           tip="Password will be hashed"
           error={errors.password}
+          type="password"
         />
         <Field
           label="Repeat Password"
           inputProps={register("password2")}
           tip="To ensure you didn't mispelled the password"
           error={errors.password2}
+          type="password"
         />
         <Button primary>Sign up</Button>
       </Form>

@@ -26,7 +26,7 @@ const Layout: FC<LayoutProps> = ({ name, children }) => {
           <Footer />
         </>
       ) : (
-        <p className="justify-self-center self-center">Loading</p>
+        <p className="justify-self-center self-center">ESSA</p>
       )}
     </main>
   );

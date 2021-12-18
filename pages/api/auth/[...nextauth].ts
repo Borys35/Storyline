@@ -1,6 +1,5 @@
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import bcrypt from "bcrypt";
-import { ObjectId } from "bson";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -21,7 +20,12 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       secret: process.env.JWT_SECRET,
     },
     callbacks: {
-      session: async ({ session, token }) => {
+      jwt: async ({ user, token }: any) => {
+        if (user && !token.sub) token.sub = user._id.toString();
+
+        return token;
+      },
+      session: async ({ session, token, user }) => {
         if (session.user) session.user.id = token.sub || "";
 
         return session;
@@ -59,10 +63,10 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             (await db.collection("users").find({ email }).count()) > 0;
           if (userExists) return null;
 
-          const user = {
+          const user: any = {
             name: username,
             email,
-            image: "",
+            image: `https://avatars.dicebear.com/api/pixel-art-neutral/${username}.svg`,
             emailVerified: null,
           };
 
@@ -75,7 +79,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             type: "local",
             email,
             hash,
-            userId: new ObjectId(insertedId),
+            userId: insertedId,
           });
 
           return user;
@@ -104,7 +108,9 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
           const success = await bcrypt.compare(password, hash);
           if (!success) return null;
 
-          const user = await db.collection("users").findOne({ _id: userId });
+          const user: any = await db
+            .collection("users")
+            .findOne({ _id: userId });
           if (!user) return null;
 
           return user;
