@@ -20,10 +20,10 @@ const Button: FC<ButtonProps> = ({
   ...props
 }) => {
   const classes = classNames(
-    "py-2 px-6 rounded-md transition focus:ring-4 text-black inline-block",
+    "element py-2 px-6 rounded-md transition focus:ring-4 ring-blue-600 text-black inline-block font-bold",
     {
-      "bg-blue-400 hover:bg-blue-500 focus:bg-blue-600": primary,
-      "bg-white hover:bg-gray-100 focus:bg-gray-200": !primary,
+      "bg-primary text-white": primary,
+      "bg-white": !primary,
       "opacity-40 pointer-events-none": disabled,
     },
     className

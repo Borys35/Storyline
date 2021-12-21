@@ -12,21 +12,21 @@ const Layout: FC<LayoutProps> = ({ name, children }) => {
   const { status } = useSession();
   const loading = status === "loading";
 
-  if (status === "loading") return <div>Loading</div>;
-
   return (
-    <main className="flex flex-col min-h-screen bg-blue-200">
+    <main className="flex flex-col min-h-screen bg-sky-100">
       <Head>
         <title>{name} | Storyline</title>
       </Head>
       {!loading ? (
         <>
           <Navbar />
-          <div className="flex-1 pt-10 px-10">{children}</div>
+          <div className="flex-1 pt-28 px-10 relative z-10">{children}</div>
           <Footer />
         </>
       ) : (
-        <p className="justify-self-center self-center">ESSA</p>
+        <div className="flex justify-center items-center h-screen">
+          <p>Loading</p>
+        </div>
       )}
     </main>
   );

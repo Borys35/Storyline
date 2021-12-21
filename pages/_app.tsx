@@ -8,8 +8,8 @@ import "../styles/globals.css";
 
 NProgress.configure({
   minimum: 0.3,
-  easing: "ease",
-  speed: 800,
+  easing: "linear",
+  speed: 400,
   showSpinner: false,
 });
 

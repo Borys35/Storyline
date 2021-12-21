@@ -22,6 +22,7 @@ export interface StoryFull {
 export interface Slide {
   title: string;
   text: string;
+  drawingUrl: string | null;
 }
 
 export interface User {
@@ -41,3 +42,11 @@ export interface CommentFull {
   createdAt: number;
   user: User;
 }
+
+export type SortOptions =
+  | "latest"
+  | "oldest"
+  | "appreciations"
+  | "most-popular"
+  | "most-watched"
+  | "highest-watched-view-ratio";

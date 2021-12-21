@@ -32,7 +32,7 @@ const Navbar: FC = () => {
   );
 
   return (
-    <nav className="relative flex justify-between items-center bg-purple-600 text-white px-10 py-4">
+    <nav className="element absolute font-bold flex justify-between items-center bg-teal-400 mt-4 left-10 right-10 px-10 py-4 z-40">
       <Link href="/">
         <a>
           <h3 className="text-3xl font-bold">Storyline</h3>
@@ -40,10 +40,10 @@ const Navbar: FC = () => {
       </Link>
 
       {/* Desktop only */}
-      <div className="hidden md:flex gap-4 items-center">{navbarBody}</div>
+      <div className="hidden md:flex gap-6 items-center">{navbarBody}</div>
 
       {/* Phone & tablet only */}
-      <div className="md:hidden flex gap-4 items-center">
+      <div className="md:hidden flex gap-6 items-center">
         <span className="cursor-pointer" onClick={() => setOpen(!open)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +61,7 @@ const Navbar: FC = () => {
       </div>
 
       {open && (
-        <div className="flex flex-col md:hidden gap-4 absolute z-50 top-full bg-purple-500 left-0 right-0 px-10 py-4 items-start">
+        <div className="element flex flex-col md:hidden gap-6 absolute z-50 top-full mt-3 bg-teal-300 left-0 right-0 px-10 py-4 items-start">
           {navbarBody}
         </div>
       )}

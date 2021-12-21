@@ -1,7 +1,9 @@
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import { NextPage } from "next";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import NProgress from "nprogress";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../components/button";
@@ -30,12 +32,14 @@ const SignUp: NextPage = () => {
   } = useForm<FormData>({ resolver: yupResolver(registerSchema) });
 
   async function handleSignUp(data: FormData) {
+    NProgress.start();
     setLoading(true);
     const { error, ok } = (await signIn("register", {
       ...data,
       redirect: false,
     })) as any;
     setLoading(false);
+    NProgress.done();
 
     if (!ok) return setError(error);
 
@@ -49,9 +53,8 @@ const SignUp: NextPage = () => {
       {loading ? "loading" : "not loading"}
       <strong>
         {error === "CredentialsSignin" &&
-          "Sign in failed. Check the details you provided are correct."}
+          "Sign up failed. Try different credentials. E-mail might have been used."}
       </strong>
-      <strong>{error}</strong>
       <OAuthButtons />
       <Form onSubmit={handleSubmit(handleSignUp)}>
         <Field
@@ -79,9 +82,16 @@ const SignUp: NextPage = () => {
           error={errors.password2}
           type="password"
         />
-        <Button primary>Sign up</Button>
+        <Button disabled={loading} primary>
+          Sign up
+        </Button>
       </Form>
-      <Button onClick={() => signIn()}>Sign in</Button>
+      <p>
+        You have already created account?{" "}
+        <Link href="/sign-in">
+          <a>Sign in</a>
+        </Link>
+      </p>
     </Layout>
   );
 };

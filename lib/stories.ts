@@ -1,33 +1,59 @@
 import { ObjectId } from "bson";
 import { JWT } from "next-auth/jwt";
-import { CommentForm, CommentFull, StoryForm, StoryFull } from "../interfaces";
+import {
+  CommentForm,
+  CommentFull,
+  SortOptions,
+  StoryForm,
+  StoryFull,
+} from "../interfaces";
 import clientPromise from "./mongodb";
 import { slidesSchema, storyInfoSchema } from "./schemas";
 
-export async function getStories(page?: number, limit?: number, sort?: string) {
+export async function getStories(
+  page?: number,
+  limit?: number,
+  sort?: SortOptions,
+  publicOnly = true
+) {
   const db = (await clientPromise).db();
   const pageIndex = page || 0;
   const pageSize = limit || Number.MAX_SAFE_INTEGER;
 
   const sortOpts =
     sort === "latest"
-      ? {
-          createdAt: -1,
-        }
+      ? { createdAt: -1 }
       : sort === "oldest"
-      ? {
-          createdAt: 1,
-        }
+      ? { createdAt: 1 }
       : sort === "appreciations"
-      ? {
-          likesCount: -1,
-        }
+      ? { likesCount: -1 }
+      : sort === "most-popular"
+      ? { viewCount: -1 }
+      : sort === "most-watched"
+      ? { watchedCount: -1 }
+      : sort === "highest-watched-view-ratio"
+      ? { watchedViewRatio: -1 }
       : { createdAt: -1 };
+
+  const match = publicOnly ? { isPrivate: false } : {};
 
   const stories = await db
     .collection("stories")
     .aggregate([
-      { $set: { likesCount: { $size: "$likes" }, id: { $toString: "$_id" } } },
+      {
+        $set: {
+          likesCount: { $size: "$likes" },
+          watchedViewRatio: {
+            $cond: {
+              if: { $gte: ["$viewCount", 1] },
+              then: { $divide: ["$watchedCount", "$viewCount"] },
+              else: 0,
+            },
+          },
+          id: { $toString: "$_id" },
+        },
+      },
+      { $match: match },
       { $sort: sortOpts },
       { $skip: pageIndex * pageSize },
       { $limit: pageSize },

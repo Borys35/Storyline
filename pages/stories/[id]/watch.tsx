@@ -1,5 +1,6 @@
 import axios from "axios";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Button from "../../../components/button";
 import Layout from "../../../components/layout";
@@ -62,7 +63,7 @@ const WatchPage: NextPage<Props> = ({ id, story }) => {
   const [index, setIndex] = useState(0);
   const [watched, setWatched] = useState(false);
   const { slides } = story;
-  const { title, text } = slides[index];
+  const { title, text, drawingUrl } = slides[index];
 
   function handlePrev() {
     if (index > 0) setIndex(index - 1);
@@ -89,6 +90,9 @@ const WatchPage: NextPage<Props> = ({ id, story }) => {
     <Layout name={!watched ? "Watching..." : "Watched"}>
       {!watched ? (
         <div>
+          {drawingUrl && (
+            <Image src={drawingUrl} width={300} height={200} alt="Drawing" />
+          )}
           <h1>{title}</h1>
           <p>{text}</p>
 

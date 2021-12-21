@@ -1,4 +1,4 @@
-import { Slide } from "../components/create-story/slides-step-view";
+import { Slide } from "../interfaces";
 import * as actionTypes from "./action-types";
 
 export interface Action {
@@ -41,9 +41,9 @@ export function deleteStorySlide(index: number): Action {
   };
 }
 
-export function setStorySlide(index: number, slide: Slide): Action {
+export function updateStorySlide(index: number, slide: object): Action {
   return {
-    type: actionTypes.SET_STORY_SLIDE,
+    type: actionTypes.UPDATE_STORY_SLIDE,
     payload: { index, slide },
   };
 }

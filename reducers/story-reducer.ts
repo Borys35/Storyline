@@ -8,7 +8,7 @@ export const storyInitialState: StoryForm = {
   name: "",
   description: "",
   isPrivate: false,
-  slides: [{ title: "Slide 1", text: "" }],
+  slides: [{ title: "Slide 1", text: "", drawingUrl: null }],
 };
 
 export const storyReducer = (state: StoryForm, { type, payload }: Action) => {
@@ -25,9 +25,12 @@ export const storyReducer = (state: StoryForm, { type, payload }: Action) => {
       return produce(state, (draft) => {
         draft.slides.splice(payload.index, 1);
       });
-    case actionTypes.SET_STORY_SLIDE:
+    case actionTypes.UPDATE_STORY_SLIDE:
       return produce(state, (draft) => {
-        draft.slides[payload.index] = payload.slide;
+        draft.slides[payload.index] = {
+          ...draft.slides[payload.index],
+          ...payload.slide,
+        };
       });
     default:
       return state;

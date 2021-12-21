@@ -63,9 +63,10 @@ const MainStepView: FC<Props> = ({ state, dispatch, shouldTrigger }) => {
         error={errors.description}
       />
       <Field
-        label="Is Private"
+        label="Is Private?"
         inputProps={register("isPrivate")}
         type="checkbox"
+        tip="Everyone still will be able to watch the story, but it won't be listed on any lists"
         error={errors.isPrivate}
       />
     </Form>

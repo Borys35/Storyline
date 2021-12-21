@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { ChangeEvent } from "react";
 import StoriesGrid from "../components/discover/stories-grid";
 import Layout from "../components/layout";
+import { SortOptions } from "../interfaces";
 
 const PAGE_SIZE = 8;
 
@@ -32,7 +33,7 @@ interface Props {}
 
 const Discover: NextPage<Props> = () => {
   const router = useRouter();
-  const sort = router.query.sort?.toString() || "latest";
+  const sort: SortOptions = router.query.sort?.toString() as SortOptions;
 
   function handleChangeSort(e: ChangeEvent<HTMLSelectElement>) {
     router.push({ query: { sort: e.target.value } });
@@ -48,6 +49,9 @@ const Discover: NextPage<Props> = () => {
         <option value="latest">Latest</option>
         <option value="oldest">Oldest</option>
         <option value="appreciations">Most Appreciated</option>
+        <option value="most-popular">Most Popular</option>
+        <option value="most-watched">Most Watched</option>
+        <option value="highest-watched-view-ratio">Highest w/v ratio</option>
       </select>
       <StoriesGrid pageSize={PAGE_SIZE} pageSort={sort} />
     </Layout>

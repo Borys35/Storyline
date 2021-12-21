@@ -1,24 +1,19 @@
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import { ComponentType } from "react";
+import Redirect from "../../components/redirect";
 
 export default function withAuth<T>(
   Component: ComponentType<T>,
   hasToBeLoggedIn: boolean
 ) {
   const Auth = (props: T) => {
-    const { data: session, status } = useSession();
-    const router = useRouter();
+    const { status } = useSession();
 
-    if (hasToBeLoggedIn && status === "unauthenticated") {
-      router.push("/sign-up");
-      return null;
-    }
+    if (hasToBeLoggedIn && status === "unauthenticated")
+      return <Redirect to="/sign-up" />;
 
-    if (!hasToBeLoggedIn && status === "authenticated") {
-      router.push("/");
-      return null;
-    }
+    if (!hasToBeLoggedIn && status === "authenticated")
+      return <Redirect to="/" />;
 
     return <Component {...props} />;
   };
