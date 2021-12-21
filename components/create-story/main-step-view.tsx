@@ -54,7 +54,7 @@ const MainStepView: FC<Props> = ({ state, dispatch, shouldTrigger }) => {
   }, [watch, dispatch, trigger]);
 
   return (
-    <Form>
+    <Form onSubmit={(e) => e.preventDefault()}>
       <Field label="Name" inputProps={register("name")} error={errors.name} />
       <Field
         label="Description"

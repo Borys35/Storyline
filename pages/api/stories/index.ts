@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { SortOptions } from "../../../interfaces";
 import getUser from "../../../lib/getUser";
 import { getStories, insertStory, validateStory } from "../../../lib/stories";
 import tryCatch from "../../../lib/tryCatch";
@@ -15,7 +16,7 @@ export default async function handler(
     const stories = await getStories(
       pageIndex,
       pageSize,
-      sort && sort.toString()
+      sort ? (sort.toString() as SortOptions) : undefined
     );
 
     res.status(200).json({ stories });

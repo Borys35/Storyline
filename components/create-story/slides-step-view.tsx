@@ -133,7 +133,7 @@ const SlidesStepView = React.forwardRef<any, Props>(
           ))}
           <Button onClick={() => handleAddSlide()}>Add slide</Button>
         </div>
-        <Form onChange={(e) => e.preventDefault()}>
+        <Form onSubmit={(e) => e.preventDefault()}>
           <Field
             label="Title"
             inputProps={register("title")}
