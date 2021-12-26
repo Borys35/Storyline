@@ -1,13 +1,13 @@
 import Image from "next/image";
 import { FC } from "react";
 import { CommentFull } from "../../interfaces";
+import timestampToString from "../../lib/timestampToString";
 
 interface Props extends CommentFull {}
 
 const CommentItem: FC<Props> = ({ text, createdAt, user }) => {
   return (
-    <div className="p-4">
-      <div>{new Date(createdAt).toDateString()}</div>
+    <div className="flex gap-3">
       <div>
         {user.picture && (
           <Image
@@ -15,12 +15,17 @@ const CommentItem: FC<Props> = ({ text, createdAt, user }) => {
             alt="Avatar"
             width={32}
             height={32}
-            className="rounded-full"
+            className="element"
           />
         )}
-        {user.name}
       </div>
-      <div>{text}</div>
+      <div>
+        <div className="flex gap-4 mb-2 items-center">
+          <p>{user.name}</p>
+          <p className="text-sm">{timestampToString(createdAt)}</p>
+        </div>
+        <p>{text}</p>
+      </div>
     </div>
   );
 };

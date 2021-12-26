@@ -18,15 +18,15 @@ const OAuthButtons: FC<OAuthButtonsProps> = ({
   return (
     <>
       {providers && (
-        <div>
+        <>
           {Object.values(providers)
             .filter(({ type }: any) => type === "oauth")
             .map(({ id, name }: any) => (
-              <Button key={id} onClick={() => signIn(id)}>
+              <Button primary key={id} onClick={() => signIn(id)}>
                 {frontText} {name}
               </Button>
             ))}
-        </div>
+        </>
       )}
     </>
   );

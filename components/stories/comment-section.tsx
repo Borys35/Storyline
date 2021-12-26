@@ -43,12 +43,10 @@ const CommentSection: FC<Props> = ({ storyId, comments, setComments }) => {
   }
 
   return (
-    <section>
+    <section className="flex flex-col gap-4">
       <InlineForm
         fieldProps={{
-          label: "Leave a comment",
           inputProps: register("text"),
-          error: errors.text,
         }}
         buttonProps={{ text: "Comment", primary: true }}
         onSubmit={handleSubmit(handleAddComment)}

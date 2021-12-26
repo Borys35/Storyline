@@ -20,10 +20,11 @@ const Button: FC<ButtonProps> = ({
   ...props
 }) => {
   const classes = classNames(
-    "element py-2 px-6 rounded-md transition focus:ring-4 ring-blue-600 text-black inline-block font-bold",
+    "element py-2 px-6 rounded-md transition focusable " +
+      "text-black inline-block font-bold",
     {
-      "bg-primary text-white": primary,
-      "bg-white": !primary,
+      "bg-primary text-white hover:brightness-110": primary,
+      "bg-white hover:brightness-90": !primary,
       "opacity-40 pointer-events-none": disabled,
     },
     className
@@ -38,8 +39,10 @@ const Button: FC<ButtonProps> = ({
 
   if (to)
     return (
-      <Link href={to} {...props}>
-        <a className={classes}>{children}</a>
+      <Link href={to}>
+        <a className={classes} {...props}>
+          {children}
+        </a>
       </Link>
     );
 

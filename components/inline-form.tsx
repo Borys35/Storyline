@@ -18,13 +18,10 @@ const InlineForm: FC<FormProps> = ({
 
   return (
     <form
-      className={classNames(
-        "flex items-end gap-6 p-6 rounded-lg bg-blue-300",
-        className
-      )}
+      className={classNames("flex items-end gap-6 rounded-lg", className)}
       {...props}
     >
-      <Field {...fieldProps} /> 
+      <Field {...fieldProps} />
       <Button {...buttonRest}>{text}</Button>
     </form>
   );

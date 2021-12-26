@@ -4,7 +4,7 @@ import { FC, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 import useOnScreen from "../../hooks/useOnScreen";
 import { StoryFull } from "../../interfaces";
-import StoryItem from "./story-item";
+import StoriesGrid from "../stories-grid";
 
 interface Props {
   pageSize: number;
@@ -26,9 +26,9 @@ const getKey = (
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
-const StoriesGrid: FC<Props> = ({ pageSize, pageSort }) => {
+const DiscoverGrid: FC<Props> = ({ pageSize, pageSort }) => {
   const router = useRouter();
-  const { data, error, size, setSize } = useSWRInfinite(
+  const { data, size, setSize } = useSWRInfinite(
     (...args) => getKey(...args, pageSize, pageSort),
     fetcher
   );
@@ -48,22 +48,10 @@ const StoriesGrid: FC<Props> = ({ pageSize, pageSort }) => {
 
   return (
     <>
-      <div className="stories-grid">
-        {data
-          ? stories.map(({ name, id }, i) => (
-              <StoryItem
-                key={i}
-                name={name}
-                onClick={() => handleStoryClick(id)}
-              />
-            ))
-          : Array(12)
-              .fill(null)
-              .map((_, i) => <div key={i} className="bg-skeleton"></div>)}
-      </div>
+      <StoriesGrid stories={stories} />
       <div ref={dummyRef}></div>
     </>
   );
 };
 
-export default StoriesGrid;
+export default DiscoverGrid;

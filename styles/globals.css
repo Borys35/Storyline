@@ -2,12 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap"); */
 
 html,
 body {
   padding: 0;
   margin: 0;
   font-family: "Poppins", sans-serif;
+  /* font-family: "Josefin Sans", sans-serif; */
+}
+
+@media (max-width: 640px) {
+  :root {
+    font-size: 14px;
+  }
 }
 
 * {
@@ -20,27 +28,35 @@ body {
 
 @layer components {
   .stories-grid {
-    @apply grid gap-4;
+    @apply grid gap-4 items-start;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    grid-auto-rows: 20rem;
-  }
 
-  .bg-skeleton {
-    @apply bg-gray-500;
-
-    animation: bg 1s alternate infinite ease-in-out;
+    /* grid-auto-rows: 20rem; */
   }
 
   .element {
     @apply border-2 border-black rounded-lg;
   }
-}
 
-@keyframes bg {
-  from {
-    opacity: 0.5;
+  .focusable {
+    @apply focus:ring-4 ring-blue-600;
   }
-  to {
-    opacity: 0.8;
+
+  .link {
+    @apply text-blue-900 relative;
+  }
+
+  .link::before {
+    @apply absolute bottom-0 right-0 w-0 bg-blue-900 transition-all duration-200;
+    height: 0.1rem;
+    content: "";
+  }
+
+  .link:hover::before {
+    @apply w-full right-auto left-0;
+  }
+
+  .max-w {
+    @apply max-w-7xl;
   }
 }

@@ -2,14 +2,20 @@ import classNames from "classnames";
 import { FC } from "react";
 
 interface FormProps extends React.HTMLAttributes<HTMLFormElement> {
-  // ref: MutableRefObject<Element>;
+  basicStyling?: boolean;
 }
 
-const Form: FC<FormProps> = ({ children, className, ...props }) => {
+const Form: FC<FormProps> = ({
+  children,
+  basicStyling = true,
+  className,
+  ...props
+}) => {
   return (
     <form
       className={classNames(
-        "flex flex-col gap-6 w-96 lg:w-4/12 p-6 rounded-lg bg-blue-300",
+        "flex flex-col gap-4 rounded-lg",
+        { "element p-6 bg-blue-300": basicStyling },
         className
       )}
       {...props}

@@ -10,6 +10,7 @@ import Button from "../components/button";
 import Field from "../components/field";
 import Form from "../components/form";
 import Layout from "../components/layout";
+import Logo from "../components/logo";
 import OAuthButtons from "../components/oauth-buttons";
 import withAuth from "../lib/hoc/withAuth";
 import { registerSchema } from "../lib/schemas";
@@ -48,50 +49,69 @@ const SignUp: NextPage = () => {
   }
 
   return (
-    <Layout name="Sign up">
-      <h1 className="text-4xl font-bold mb-4">Sign up</h1>
-      {loading ? "loading" : "not loading"}
-      <strong>
-        {error === "CredentialsSignin" &&
-          "Sign up failed. Try different credentials. E-mail might have been used."}
-      </strong>
-      <OAuthButtons />
-      <Form onSubmit={handleSubmit(handleSignUp)}>
-        <Field
-          label="Username"
-          inputProps={register("username")}
-          error={errors.username}
-        />
-        <Field
-          label="E-mail"
-          inputProps={register("email")}
-          error={errors.email}
-          type="email"
-        />
-        <Field
-          label="Password"
-          inputProps={register("password")}
-          tip="Password will be hashed"
-          error={errors.password}
-          type="password"
-        />
-        <Field
-          label="Repeat Password"
-          inputProps={register("password2")}
-          tip="To ensure you didn't mispelled the password"
-          error={errors.password2}
-          type="password"
-        />
-        <Button disabled={loading} primary>
-          Sign up
-        </Button>
-      </Form>
-      <p>
-        You have already created account?{" "}
-        <Link href="/sign-in">
-          <a>Sign in</a>
-        </Link>
-      </p>
+    <Layout
+      name="Sign up"
+      hasPadding={false}
+      hasMaxWidth={false}
+      mainOnly={true}
+    >
+      <div className="flex flex-col-reverse md:flex-row">
+        <div className="element flex flex-col gap-10 px-hor py-10 h-full w-full sm:w-96 rounded-l-none rounded-r-3xl bg-cyan-500">
+          <Logo />
+          {error === "CredentialsSignin" && (
+            <strong>
+              Sign up failed. Try different credentials. E-mail might have been
+              used.
+            </strong>
+          )}
+          <Form basicStyling={false}>
+            <OAuthButtons />
+          </Form>
+          <Form onSubmit={handleSubmit(handleSignUp)} basicStyling={false}>
+            <Field
+              label="Username"
+              inputProps={register("username")}
+              error={errors.username}
+            />
+            <Field
+              label="E-mail"
+              inputProps={register("email")}
+              error={errors.email}
+              type="email"
+            />
+            <Field
+              label="Password"
+              inputProps={register("password")}
+              tip="Password will be hashed"
+              error={errors.password}
+              type="password"
+            />
+            <Field
+              label="Repeat Password"
+              inputProps={register("password2")}
+              tip="To ensure you didn't mispelled the password"
+              error={errors.password2}
+              type="password"
+            />
+            <Button disabled={loading} primary>
+              Sign up
+            </Button>
+          </Form>
+          <p>
+            You have already created account?{" "}
+            <Link href="/sign-in">
+              <a className="link">Sign in</a>
+            </Link>
+          </p>
+        </div>
+        <div className="flex-1 p-10">
+          <h1 className="text-4xl font-bold mb-4">Sign up</h1>
+          <p>
+            With account you can create your own stories and share your thoughts
+            about works of other creators
+          </p>
+        </div>
+      </div>
     </Layout>
   );
 };

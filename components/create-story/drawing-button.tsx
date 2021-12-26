@@ -78,11 +78,18 @@ const DrawingButton: FC<Props> = ({ children, setDrawingURL }) => {
         {children}
       </Button>
       <Modal isOpen={open} setOpen={setOpen}>
-        <canvas ref={canvasRef} className="bg-red-50"></canvas>
-        <p>
-          Be careful! You will NOT be able to make changes when you close the
-          window.
-        </p>
+        <div className="flex flex-col items-center gap-4">
+          <canvas
+            ref={canvasRef}
+            className="bg-red-50 element"
+            width={300}
+            height={200}
+          ></canvas>
+          <p>
+            Be careful! You will <strong>NOT</strong> be able to make changes
+            when you close the window.
+          </p>
+        </div>
       </Modal>
     </>
   );

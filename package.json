@@ -10,6 +10,7 @@
   "dependencies": {
     "@hookform/resolvers": "^2.8.3",
     "@next-auth/mongodb-adapter": "0.0.2-next.285",
+    "@tailwindcss/line-clamp": "^0.3.0",
     "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "classnames": "^2.3.1",

@@ -83,12 +83,12 @@ const CreateStory: NextPage = () => {
 
   return (
     <Layout name="Create story">
-      <div className="flex justify-end gap-4">
+      <div className="flex justify-end gap-4 mb-4">
         <Button onClick={() => handleSubmit()} disabled={submitting} primary>
           Publish
         </Button>
         {step < stepCount - 1 && <Button onClick={handleNext}>Next</Button>}
-        {step > 0 && <Button onClick={handleBack}>Back</Button>}
+        {step > 0 && <Button onClick={() => handleBack()}>Back</Button>}
       </div>
       <strong className="text-red-500"></strong>
       {step === 0 ? (

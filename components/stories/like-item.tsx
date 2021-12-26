@@ -8,9 +8,17 @@ interface Props {
 
 const LikeItem: FC<Props> = ({ name, picture }) => {
   return (
-    <div>
-      {picture && <Image src={picture} alt="Avatar" width={32} height={32} />}
-      {name}
+    <div className="flex items-start gap-2">
+      {picture && (
+        <Image
+          src={picture}
+          alt="Avatar"
+          width={32}
+          height={32}
+          className="element"
+        />
+      )}
+      <span>{name}</span>
     </div>
   );
 };

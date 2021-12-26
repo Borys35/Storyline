@@ -3,12 +3,14 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Button from "../../components/button";
 import Layout from "../../components/layout";
-import { User } from "../../interfaces";
-import withAuth from "../../lib/hoc/withAuth";
+import StoriesGrid from "../../components/stories-grid";
+import { StoryFull, User } from "../../interfaces";
+import { getStoriesByUserId } from "../../lib/stories";
 import { getUser } from "../../lib/users";
 
 interface Props {
   user: User;
+  stories: StoryFull[] | null;
 }
 
 export const getServerSideProps: GetServerSideProps = async (
@@ -27,8 +29,10 @@ export const getServerSideProps: GetServerSideProps = async (
       notFound: true,
     };
 
+  const stories = await getStoriesByUserId(id);
+
   return {
-    props: { user },
+    props: { user, stories },
   };
 };
 
@@ -70,24 +74,42 @@ export const getServerSideProps: GetServerSideProps = async (
 //   };
 // };
 
-const Profile: NextPage<Props> = ({ user }) => {
-  const { id, name, picture } = user as any;
+const Profile: NextPage<Props> = ({ user, stories }) => {
+  const { id, name, image } = user as any;
   const { data: session } = useSession();
+
+  console.log(stories);
 
   return (
     <Layout name="Profile">
-      <h1 className="font-bold text-3xl">Profile</h1>
-      <p>
-        Username: <strong>{name}</strong>
-      </p>
-      {picture && (
-        <Image src={picture?.toString()} alt="Avatar" width={64} height={64} />
-      )}
-      {session && session.user?.id === id && (
-        <Button to="/my-profile">Go to your profile</Button>
-      )}
+      <div className="flex gap-6">
+        {image && (
+          <Image
+            src={image?.toString()}
+            alt="Avatar"
+            width={192}
+            height={192}
+            className="element"
+          />
+        )}
+        <div className="p-4 flex flex-col gap-4">
+          <h1 className="font-bold text-3xl">{name}</h1>
+
+          {session && session.user?.id === id && (
+            <Button to="/settings">Go to your settings</Button>
+          )}
+        </div>
+      </div>
+      <div className="mt-10">
+        <h2 className="font-bold text-2xl mb-2">Stories of {name}</h2>
+        {stories ? (
+          <StoriesGrid stories={stories || []} />
+        ) : (
+          <p>No stories yet.</p>
+        )}
+      </div>
     </Layout>
   );
 };
 
-export default withAuth(Profile, true);
+export default Profile;

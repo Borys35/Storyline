@@ -9,7 +9,7 @@ const Input: FC<any> = React.forwardRef(({ type, ...props }, ref) => {
       <textarea
         ref={ref}
         type={type}
-        className="outline-none focus:ring-4 rounded-lg px-4 py-2"
+        className="element outline-none focusable rounded-lg px-4 py-2 w-full"
         {...props}
       ></textarea>
     );
@@ -18,9 +18,12 @@ const Input: FC<any> = React.forwardRef(({ type, ...props }, ref) => {
     <input
       ref={ref}
       type={type}
-      className={classNames("outline-none focus:ring-4 rounded-lg px-4 py-2", {
-        "w-fit": type === "checkbox" || type === "radio",
-      })}
+      className={classNames(
+        "element outline-none focusable rounded-lg px-4 py-2 w-full",
+        {
+          "w-fit": type === "checkbox" || type === "radio",
+        }
+      )}
       {...props}
     />
   );

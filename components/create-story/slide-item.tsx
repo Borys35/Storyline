@@ -25,9 +25,9 @@ const SlideItem: FC<Props> = ({
   return (
     <div
       className={classNames(
-        "relative p-8 rounded-xl bg-indigo-400 cursor-pointer",
-        { "ring-4 ring-red-500": hasError },
-        { "ring-4 ring-blue-500": isSelected }
+        "relative px-8 py-4 rounded-xl bg-indigo-400 cursor-pointer border-2 border-black break-words",
+        { "ring-4 ring-red-600": hasError },
+        { "ring-4 ring-blue-600": isSelected }
       )}
       onClick={handleClick}
       {...props}
@@ -45,7 +45,7 @@ const SlideItem: FC<Props> = ({
           clipRule="evenodd"
         />
       </svg>
-      {title}
+      <span className="line-clamp-3 pointer-events-none">{title}</span>
     </div>
   );
 };

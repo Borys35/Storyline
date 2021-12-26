@@ -86,26 +86,87 @@ const WatchPage: NextPage<Props> = ({ id, story }) => {
     axios.put(`/api/stories/${id}/add-watched`);
   }, [watched, id]);
 
-  return (
-    <Layout name={!watched ? "Watching..." : "Watched"}>
-      {!watched ? (
-        <div>
-          {drawingUrl && (
-            <Image src={drawingUrl} width={300} height={200} alt="Drawing" />
-          )}
-          <h1>{title}</h1>
-          <p>{text}</p>
+  const ArrowLeft = () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-6 w-6 cursor-pointer"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      onClick={() => handlePrev()}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M10 19l-7-7m0 0l7-7m-7 7h18"
+      />
+    </svg>
+  );
 
-          <Button to={`/stories/${id}`}>Close</Button>
-          <Button onClick={() => handlePrev()}>Prev</Button>
-          <Button onClick={() => handleNext()}>Next</Button>
+  const ArrowRight = () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-6 w-6 cursor-pointer"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      onClick={() => handleNext()}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M14 5l7 7m0 0l-7 7m7-7H3"
+      />
+    </svg>
+  );
+
+  return (
+    <Layout
+      name={!watched ? "Watching..." : "Watched"}
+      mainOnly={true}
+      hasPadding={false}
+    >
+      <div className="m-10">
+        {!watched && (
+          <Button to={`/stories/${id}`} className="mb-3">
+            Close
+          </Button>
+        )}
+        <div className="element p-10">
+          {!watched ? (
+            <div>
+              <div className="flex gap-4 items-center">
+                <ArrowLeft />
+                <div className="flex-1 flex flex-col gap-4 text-center items-center">
+                  {drawingUrl && (
+                    <Image
+                      src={drawingUrl}
+                      width={300}
+                      height={200}
+                      alt="Drawing"
+                    />
+                  )}
+                  <h1 className="font-bold text-4xl">{title}</h1>
+                  <p className="text-lg">{text}</p>
+                </div>
+                <ArrowRight />
+              </div>
+            </div>
+          ) : (
+            <div>
+              <h1 className="font-bold text-4xl mb-2">Story has ended</h1>
+              <p className="mb-6">
+                Return to the main page and rate the story!
+              </p>
+              <Button to={`/stories/${id}`} primary>
+                Return
+              </Button>
+            </div>
+          )}
         </div>
-      ) : (
-        <div>
-          ENDED
-          <Button to={`/stories/${id}`}>Return</Button>
-        </div>
-      )}
+      </div>
     </Layout>
   );
 };

@@ -26,10 +26,12 @@ const Modal: FC<ModalProps> = ({ isOpen, setOpen, children }) => {
 
   return ReactDOM.createPortal(
     <div
-      className="fixed w-screen h-screen bg-gray-500 bg-opacity-70 z-10 top-0 left-0 py-20 overflow-y-scroll"
+      className="fixed w-screen h-screen bg-gray-500 bg-opacity-70 z-50 top-0 left-0 py-20 overflow-y-scroll"
       onClick={handleShadowClick}
     >
-      <div className="w-96 mx-auto bg-red-400 rounded-lg p-4">{children}</div>
+      <div className="w-96 mx-auto element bg-sky-200 rounded-lg p-4">
+        {children}
+      </div>
     </div>,
     container
   );

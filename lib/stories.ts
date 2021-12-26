@@ -66,6 +66,23 @@ export async function getStories(
   return stories as StoryFull[];
 }
 
+export async function getStoriesByUserId(userId: string) {
+  const db = (await clientPromise).db();
+
+  const stories = await db
+    .collection("stories")
+    .aggregate([
+      { $set: { id: { $toString: "$_id" } } },
+      { $match: { isPrivate: false, "owner.userId": userId } },
+      { $project: { _id: 0, likes: 0, comments: 0 } },
+    ])
+    .toArray()
+    .catch((e) => console.error(e));
+
+  if (!stories) return null;
+  return stories as StoryFull[];
+}
+
 export async function getStory(id: string) {
   const db = (await clientPromise).db();
 

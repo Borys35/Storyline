@@ -1,20 +1,25 @@
 import axios from "axios";
+import classNames from "classnames";
 import produce from "immer";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
 import Button from "../../../components/button";
+import StoryItem from "../../../components/discover/story-item";
 import Layout from "../../../components/layout";
 import Modal from "../../../components/modal";
 import CommentSection from "../../../components/stories/comment-section";
 import LikeItem from "../../../components/stories/like-item";
+import WithSubheading from "../../../components/stories/with-subheading";
 import { StoryFull } from "../../../interfaces";
-import { getStory } from "../../../lib/stories";
+import { getStories, getStory } from "../../../lib/stories";
+import timestampToString from "../../../lib/timestampToString";
 
 interface Props {
   id: string;
   story: StoryFull;
+  stories: StoryFull[] | null;
 }
 
 export const getServerSideProps: GetServerSideProps = async (
@@ -33,8 +38,10 @@ export const getServerSideProps: GetServerSideProps = async (
       notFound: true,
     };
 
+  const stories = await getStories(0, 6, "latest");
+
   return {
-    props: { story },
+    props: { story, stories },
   };
 };
 
@@ -77,7 +84,7 @@ export const getServerSideProps: GetServerSideProps = async (
 const ThumbUp = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6"
+    className="h-8 w-8"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -91,7 +98,18 @@ const ThumbUp = () => (
   </svg>
 );
 
-const StoryPage: NextPage<Props> = ({ story }) => {
+const ThumbUpSolid = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-8 w-8"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+  >
+    <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+  </svg>
+);
+
+const StoryPage: NextPage<Props> = ({ story, stories }) => {
   // const [likeAdd, setLikeAdd] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const { data: session } = useSession();
@@ -99,6 +117,8 @@ const StoryPage: NextPage<Props> = ({ story }) => {
     id,
     name,
     description,
+    isPrivate,
+    slides,
     likes,
     comments,
     viewCount,
@@ -148,33 +168,112 @@ const StoryPage: NextPage<Props> = ({ story }) => {
 
   return (
     <Layout name={name}>
-      <Button to="/discover">Back</Button>
-      <p>{new Date(createdAt).toDateString()}</p>
-      <Link href={`/profile/${owner.userId}`}>
-        <a className="underline">Owner: {owner.name}</a>
-      </Link>
-      <h1>{name}</h1>
-      <p>{description}</p>
-      <Button to={`/stories/${id}/watch`} primary>
-        Watch the story
-      </Button>
+      <div className="flex flex-col gap-12">
+        <Button to="/discover" className="self-start">
+          Back
+        </Button>
+        <div className="grid lg:grid-cols-3 gap-12">
+          <div className="col-start-1 col-end-3 self-start element p-6 bg-cyan-400">
+            <WithSubheading subheading="Title" className="mb-10">
+              <h1 className="font-bold text-6xl break-words">{name}</h1>
+            </WithSubheading>
+            <Button to={`/stories/${id}/watch`} primary>
+              Watch the story
+            </Button>
+          </div>
+          <div className="flex flex-col items-start gap-4">
+            <WithSubheading subheading="Description">
+              <p>{description || "No description :("}</p>
+            </WithSubheading>
+            <WithSubheading subheading="Created at">
+              <p className="text-2xl font-bold">
+                {timestampToString(createdAt)}
+              </p>
+            </WithSubheading>
+            <WithSubheading subheading="Author">
+              <Link href={`/profile/${owner.userId}`}>
+                <a className="text-2xl font-bold block link">{owner.name}</a>
+              </Link>
+            </WithSubheading>
+            <WithSubheading subheading="How many slides?">
+              <p className="text-2xl font-bold">{slides.length}</p>
+            </WithSubheading>
+            <WithSubheading subheading="Is Private?">
+              <p className="text-2xl font-bold">{isPrivate ? "Yes" : "No"}</p>
+            </WithSubheading>
+          </div>
+        </div>
+
+        <div className="flex justify-between element px-4 py-2">
+          <div className="flex gap-4 col-start-1 col-end-3">
+            <WithSubheading subheading="Views">
+              <p className="text-2xl font-bold">{viewCount}</p>
+            </WithSubheading>
+            <WithSubheading subheading="Views (watched)">
+              <p className="text-2xl font-bold">{watchedCount}</p>
+            </WithSubheading>
+          </div>
+          <div className="flex gap-4 items-center">
+            <span onClick={() => handleLike()} className="cursor-pointer">
+              {findSessionUserIndex() === -1 ? <ThumbUp /> : <ThumbUpSolid />}
+            </span>
+            <WithSubheading subheading="Likes">
+              <p
+                className="text-2xl font-bold cursor-pointer"
+                onClick={() => setModalOpen(true)}
+              >
+                {likeArray.length}
+              </p>
+            </WithSubheading>
+          </div>
+        </div>
+
+        <div className="grid lg:grid-cols-3 gap-12">
+          {id && (
+            <WithSubheading
+              className="lg:col-start-1 lg:col-end-3"
+              subheading={`${commentArray.length} Comment${
+                commentArray.length !== 1 ? "s" : ""
+              }`}
+            >
+              <CommentSection
+                storyId={id}
+                comments={commentArray}
+                setComments={setCommentArray}
+              />
+            </WithSubheading>
+          )}
+          {stories && (
+            <div className="flex flex-col gap-4">
+              {stories.map(({ id, name, description, owner, createdAt }, i) => (
+                <StoryItem
+                  key={i}
+                  id={id || ""}
+                  name={name}
+                  description={description}
+                  owner={owner}
+                  createdAt={createdAt}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
       <Modal isOpen={modalOpen} setOpen={setModalOpen}>
-        <h1>Likes</h1>
-        {likeArray.map(({ name, picture }, i) => (
-          <LikeItem key={i} name={name} picture={picture} />
-        ))}
+        <div className="flex flex-col gap-2">
+          <h1
+            className={classNames("font-bold text-xl", {
+              "pb-3": likeArray.length,
+            })}
+          >
+            {likeArray.length ? "Likes" : "No likes for now"}
+          </h1>
+          {likeArray.map(({ name, picture }, i) => (
+            <LikeItem key={i} name={name} picture={picture} />
+          ))}
+        </div>
       </Modal>
-      <strong onClick={() => setModalOpen(true)}>{likeArray.length}</strong> ---{" "}
-      {viewCount} / {watchedCount}
-      <ThumbUp />
-      <Button onClick={() => handleLike()}>Like</Button>
-      {id && (
-        <CommentSection
-          storyId={id}
-          comments={commentArray}
-          setComments={setCommentArray}
-        />
-      )}
     </Layout>
   );
 };
