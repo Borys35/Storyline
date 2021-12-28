@@ -107,7 +107,7 @@ const WatchPage: NextPage<Props> = ({ id, story }) => {
   const ArrowRight = () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="h-6 w-6 cursor-pointer"
+      className="h-6 w-6 cursor-pointer justify-self-end"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -137,9 +137,9 @@ const WatchPage: NextPage<Props> = ({ id, story }) => {
         <div className="element p-10">
           {!watched ? (
             <div>
-              <div className="flex gap-4 items-center">
+              <div className="grid grid-cols-2 md:flex gap-4 items-center">
                 <ArrowLeft />
-                <div className="flex-1 flex flex-col gap-4 text-center items-center">
+                <div className="flex-1 flex flex-col gap-4 text-center items-center col-start-1 col-end-3 row-start-2">
                   {drawingUrl && (
                     <Image
                       src={drawingUrl}

@@ -78,8 +78,6 @@ const Profile: NextPage<Props> = ({ user, stories }) => {
   const { id, name, image } = user as any;
   const { data: session } = useSession();
 
-  console.log(stories);
-
   return (
     <Layout name="Profile">
       <div className="flex gap-6">
@@ -92,7 +90,7 @@ const Profile: NextPage<Props> = ({ user, stories }) => {
             className="element"
           />
         )}
-        <div className="p-4 flex flex-col gap-4">
+        <div className="p-4 flex flex-col items-start gap-4">
           <h1 className="font-bold text-3xl">{name}</h1>
 
           {session && session.user?.id === id && (

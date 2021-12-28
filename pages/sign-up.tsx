@@ -64,7 +64,7 @@ const SignUp: NextPage = () => {
               used.
             </strong>
           )}
-          <Form basicStyling={false}>
+          <Form onSubmit={(e) => e.preventDefault()} basicStyling={false}>
             <OAuthButtons />
           </Form>
           <Form onSubmit={handleSubmit(handleSignUp)} basicStyling={false}>

@@ -57,7 +57,7 @@ const Navbar: FC = () => {
   useEffect(() => {
     let prevScrollY = 0;
     function handleScroll(e: Event) {
-      setShow(window.scrollY < prevScrollY);
+      setShow(window.scrollY <= prevScrollY);
       prevScrollY = window.scrollY;
     }
 
@@ -73,7 +73,7 @@ const Navbar: FC = () => {
       className={classNames(
         "element fixed font-bold bg-teal-400 left-10 right-10 py-4 z-40 transition-all duration-300",
         { "top-4": show },
-        { "-top-72": !show }
+        { "-top-80": !show }
       )}
     >
       <div className="max-w flex justify-between items-center mx-auto px-hor 2xl:px-0">
@@ -116,11 +116,9 @@ const Navbar: FC = () => {
       >
         <div
           className={classNames(
-            "element flex flex-col gap-6 mt-3 bg-teal-300 px-hor py-4 " +
-              "items-start"
-            // { "scale-y-0": !open },
-            // { "scale-y-100": open }
+            "element flex flex-col bg-teal-300 gap-6 mt-3 px-hor py-4 duration-500 items-start"
           )}
+          style={{ transition: "height .5s" }}
         >
           {navbarBody}
         </div>

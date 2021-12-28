@@ -10,11 +10,12 @@ import { loginSchema, registerSchema } from "../../../lib/schemas";
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   return await NextAuth(req, res, {
+    secret: process.env.NEXTAUTH_SECRET,
     adapter: MongoDBAdapter({
       db: (await clientPromise).db() as any,
     }),
     session: {
-      jwt: true,
+      strategy: "jwt",
     },
     jwt: {
       secret: process.env.JWT_SECRET,
@@ -26,7 +27,10 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         return token;
       },
       session: async ({ session, token, user }) => {
-        if (session.user) session.user.id = token.sub || "";
+        if (session.user) {
+          if (token) session.user.id = token.sub || "";
+          else if (user) session.user.id = user.id;
+        }
 
         return session;
       },

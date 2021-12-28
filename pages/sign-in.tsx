@@ -61,7 +61,7 @@ const SignIn: NextPage = () => {
               Sign in failed. Check the credentials you provided are correct.
             </strong>
           )}
-          <Form basicStyling={false}>
+          <Form onSubmit={(e) => e.preventDefault()} basicStyling={false}>
             <OAuthButtons />
           </Form>
           <Form onSubmit={handleSubmit(handleSignIn)} basicStyling={false}>

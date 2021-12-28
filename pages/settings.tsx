@@ -23,10 +23,10 @@ const MyProfile: NextPage = () => {
         )}
         <div>
           <p>
-            Username: <strong>{session?.user?.name || "EMPTY"}</strong>
+            Username: <strong>{session?.user?.name || "Not provided"}</strong>
           </p>
           <p>
-            E-mail: <strong>{session?.user?.email || "EMPTY"}</strong>
+            E-mail: <strong>{session?.user?.email || "Not provided"}</strong>
           </p>
         </div>
         <Button onClick={() => signOut({ callbackUrl: "/" })}>Sign out</Button>
