@@ -1,8 +1,8 @@
 import { useSession } from "next-auth/react";
-import { ComponentType } from "react";
+import { ComponentType, HTMLAttributes } from "react";
 import Redirect from "../../components/redirect";
 
-export default function withAuth<T>(
+export default function withAuth<T extends JSX.IntrinsicAttributes>(
   Component: ComponentType<T>,
   hasToBeLoggedIn: boolean
 ) {

@@ -21,7 +21,7 @@ export default async function handler(
 
   const comment = { text };
   const fullComment = await addComment(
-    new ObjectId(id.toString()),
+    new ObjectId(id?.toString()),
     user,
     comment
   ).catch((err) => res.status(400).json({ message: err }));

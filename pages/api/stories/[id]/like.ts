@@ -18,7 +18,7 @@ export default async function handler(
       .status(400)
       .json({ message: "You must be signed in for this action" });
 
-  const hasLiked = await like(new ObjectId(id.toString()), user).catch((err) =>
+  const hasLiked = await like(new ObjectId(id?.toString()), user).catch((err) =>
     res.status(400).json({ message: err })
   );
 

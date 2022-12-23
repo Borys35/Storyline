@@ -11,7 +11,7 @@ export default async function handler(
 
   const { id } = req.query;
 
-  await addViewCount(new ObjectId(id.toString())).catch((err) =>
+  await addViewCount(new ObjectId(id?.toString())).catch((err) =>
     res.status(400).json({ message: err })
   );
 
