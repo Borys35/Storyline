@@ -1,4 +1,4 @@
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import React, { FC, useEffect, useLayoutEffect } from "react";
 import { useForm } from "react-hook-form";
 import { storyInfoSchema } from "../../lib/schemas";

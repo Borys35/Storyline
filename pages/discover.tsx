@@ -10,28 +10,6 @@ const PAGE_SIZE = 16;
 
 interface Props {}
 
-// export const getStaticProps: GetStaticProps = async (
-//   context: GetStaticPropsContext
-// ) => {
-//   const sort = context.params?.sort?.toString();
-//   const stories = await getStories(0, PAGE_SIZE, sort);
-
-//   console.log("discover stories", stories);
-
-//   return {
-//     props: { fallback: { "/api/stories": [{ stories }] } },
-//     revalidate: 60,
-//   };
-// };
-
-// export const getServerSideProps: GetServerSideProps = async () => {
-//   const stories = await getStories(0, PAGE_SIZE);
-
-//   return {
-//     props: { fallback: { "/api/stories": { stories } } },
-//   };
-// };
-
 const Discover: NextPage<Props> = () => {
   const router = useRouter();
   const sort: SortOptions = router.query.sort?.toString() as SortOptions;

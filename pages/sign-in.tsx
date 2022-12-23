@@ -1,4 +1,4 @@
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { NextPage } from "next";
 import { signIn } from "next-auth/react";
 import Link from "next/link";

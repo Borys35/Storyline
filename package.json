@@ -8,7 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@hookform/resolvers": "^2.8.3",
+    "@hookform/resolvers": "^2.9.10",
     "@next-auth/mongodb-adapter": "0.0.2-next.285",
     "@tailwindcss/line-clamp": "^0.3.0",
     "axios": "^0.24.0",
@@ -17,12 +17,12 @@
     "immer": "^9.0.6",
     "mongodb": "^4.1.4",
     "next": "^12.0.7",
-    "next-auth": "^4.0.6",
+    "next-auth": "^4.18.7",
     "next-pwa": "^5.4.0",
     "nprogress": "^0.2.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-hook-form": "^7.18.0",
+    "react-hook-form": "^7.41.0",
     "react-spring": "^9.3.2",
     "sharp": "^0.29.3",
     "swr": "^1.0.1",

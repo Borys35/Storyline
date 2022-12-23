@@ -1,4 +1,4 @@
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import produce from "immer";
 import Image from "next/image";
 import React, { useImperativeHandle, useLayoutEffect, useState } from "react";
@@ -64,7 +64,6 @@ const SlidesStepView = React.forwardRef<any, Props>(
     }
 
     function handleChangeSlide(i: number) {
-      console.log("i", i);
       setIndex(i);
 
       if (errorIndexes.includes(i))

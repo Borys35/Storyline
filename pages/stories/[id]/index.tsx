@@ -45,42 +45,6 @@ export const getServerSideProps: GetServerSideProps = async (
   };
 };
 
-// export const getStaticProps: GetStaticProps = async (
-//   context: GetStaticPropsContext
-// ) => {
-//   const { params } = context;
-//   const id = params?.id?.toString();
-
-//   if (!id)
-//     return {
-//       notFound: true,
-//     };
-
-//   const story = await getStory(id);
-//   if (!story)
-//     return {
-//       notFound: true,
-//     };
-
-//   return {
-//     props: { story },
-//     revalidate: 30,
-//   };
-// };
-
-// export const getStaticPaths: GetStaticPaths = async (
-//   context: GetStaticPathsContext
-// ) => {
-//   const stories = (await getStories()) || [];
-
-//   const paths = stories.map((story) => ({ params: { id: story.id } }));
-
-//   return {
-//     paths,
-//     fallback: false,
-//   };
-// };
-
 const ThumbUp = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +74,6 @@ const ThumbUpSolid = () => (
 );
 
 const StoryPage: NextPage<Props> = ({ story, stories }) => {
-  // const [likeAdd, setLikeAdd] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const { data: session } = useSession();
   const {
@@ -128,7 +91,6 @@ const StoryPage: NextPage<Props> = ({ story, stories }) => {
   } = story;
   const [likeArray, setLikeArray] = useState(likes);
   const [commentArray, setCommentArray] = useState(comments);
-  // const likesCount = likes.length + likeAdd;
 
   function findSessionUserIndex() {
     const foundIndex = likeArray.findIndex(
@@ -158,13 +120,6 @@ const StoryPage: NextPage<Props> = ({ story, stories }) => {
       );
     }
   }
-
-  // useEffect(() => {
-  //   if (!session) return;
-
-  //   const foundUser = !!likes.find((like) => like.userId === session?.user?.id);
-  //   setLiked(foundUser);
-  // }, []);
 
   return (
     <Layout name={name}>

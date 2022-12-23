@@ -27,92 +27,16 @@ const Home: NextPage<Props> = ({ stories }) => {
     <Layout name="Home" hasPadding={false} hasMaxWidth={false}>
       <div className="flex flex-col gap-36">
         <header
-          className="relative element flex flex-col gap-12 items-center bg-red-400 
-              rounded-t-none rounded-b-full pt-48 pb-32 px-hor z-30 overflow-hidden"
+          className="relative element flex flex-col items-center bg-red-400 
+              rounded-t-none rounded-b-3xl pt-48 pb-32 px-hor z-30 overflow-hidden"
         >
-          <svg
-            width="1196"
-            height="562"
-            viewBox="0 0 1196 562"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="absolute -z-10 top-0 bottom-0"
-          >
-            <rect
-              x="309"
-              y="214"
-              width="373"
-              height="225"
-              rx="7"
-              fill="#FCA5A5"
-              stroke="black"
-              strokeWidth="2"
-            />
-            <rect
-              x="122"
-              y="393"
-              width="78"
-              height="78"
-              rx="7"
-              fill="#FCA5A5"
-              stroke="black"
-              strokeWidth="2"
-            />
-            <rect
-              x="375"
-              y="483"
-              width="78"
-              height="78"
-              rx="7"
-              fill="#FCA5A5"
-              stroke="black"
-              strokeWidth="2"
-            />
-            <rect
-              x="813"
-              y="361"
-              width="78"
-              height="78"
-              rx="7"
-              fill="#FCA5A5"
-              stroke="black"
-              strokeWidth="2"
-            />
-            <rect
-              x="1117"
-              y="199"
-              width="78"
-              height="78"
-              rx="7"
-              fill="#FCA5A5"
-              stroke="black"
-              strokeWidth="2"
-            />
-            <rect
-              x="968"
-              y="1"
-              width="72"
-              height="520"
-              rx="7"
-              fill="#FCA5A5"
-              stroke="black"
-              strokeWidth="2"
-            />
-            <rect
-              x="1"
-              y="21"
-              width="412"
-              height="112"
-              rx="7"
-              fill="#FCA5A5"
-              stroke="black"
-              strokeWidth="2"
-            />
-          </svg>
-
-          <h1 className="text-6xl font-bold text-center">
+          <h1 className="text-6xl font-bold text-center mb-6">
             Write your own story
           </h1>
+          <p className="mb-12 text-lg text-center">
+            Storyline is a content-sharing platform for everyone. Create and
+            explore stories!
+          </p>
           <div className="flex flex-col md:flex-row items-center gap-4">
             <Button primary href="#discover">
               Dive into
@@ -126,10 +50,10 @@ const Home: NextPage<Props> = ({ stories }) => {
         </header>
         <section className="ml-calced pt-8" id="discover">
           <div className="mr-calced">
-            <h2 className="font-bold text-5xl mb-4">Discover whole library</h2>
+            <h2 className="font-bold text-5xl mb-4">Discover whole database</h2>
             <p className="mb-8">
-              Erat vitae tortor est proin id sagittis ipsum vitae. Nec in sed
-              massa proin morbi.
+              With pagination and sorting functionality you can go through all
+              stories faster and more conveniently.
             </p>
           </div>
           <div className="relative flex md:block gap-4 whitespace-nowrap">
@@ -157,40 +81,41 @@ const Home: NextPage<Props> = ({ stories }) => {
           </div>
         </section>
         <section className="p-hor max-w-4xl mx-auto">
-          <div className="grid sm:grid-cols-2 gap-8">
+          <div className="grid sm:grid-cols-2 gap-12">
             <h2 className="font-bold text-5xl sm:col-start-1 sm:col-end-3 text-center">
-              Why to use it?
+              Features of the app
             </h2>
             <Block
               side="left"
-              heading="Explore tons of ideas"
-              text="Erat vitae tortor est proin id sagittis ipsum vitae. Nec in sed massa proin morbi."
+              heading="Server-side rendering"
+              text="Every page on this site is either statically generated in build time or built on the server when requested. There is no CSR. Everything thanks to Next.js."
             />
             <Block
               side="right"
-              heading="Explore tons of ideas"
-              text="Erat vitae tortor est proin id sagittis ipsum vitae. Nec in sed massa proin morbi."
+              heading="Authentication"
+              text="You can choose if you want to use help of well known providers (Google/GitHub) or sign up in a traditional way - with e-mail and password."
             />
             <Block
               side="left"
-              heading="Explore tons of ideas"
-              text="Erat vitae tortor est proin id sagittis ipsum vitae. Nec in sed massa proin morbi."
+              heading="Pagination/Sorting"
+              text="Besides listing all visible stories, you can sort them. Stories are always sorted in some way and displayed with a pagination feature."
             />
             <Block
               side="right"
-              heading="Explore tons of ideas"
-              text="Erat vitae tortor est proin id sagittis ipsum vitae. Nec in sed massa proin morbi."
+              heading="All features that content-sharing website needs"
+              text="Posting, listing, sorting, commenting, likes, views. These are some of the content-sharing platform's features that are also covered here."
             />
           </div>
         </section>
         <section className="flex flex-col-reverse xl:flex-row rounded-3xl element bg-red-400 p-hor mx-hor xl:mr-0 xl:rounded-r-none xl:rounded-l-3xl gap-24 xl:ml-calced xl:pr-calced">
           <div>
             <h2 className="font-bold text-5xl mb-6">
-              Write own stories with easy creator
+              Build your stories with an easy creator
             </h2>
-            <p className="text-xl mb-10">
-              Felis ultrices scelerisque sapien, integer urna, tortor eu. Proin
-              nulla viverra in neque, ornare ut.
+            <p className="text-lg mb-12">
+              Storyline&apos;s story creator lets you build your stories in a
+              fun, easy way. Everything is always validated so you don&apos;t
+              mess up with a content of the story!
             </p>
             <Button primary to="/create-story">
               Create story

@@ -36,44 +36,6 @@ export const getServerSideProps: GetServerSideProps = async (
   };
 };
 
-// export const getStaticProps: GetStaticProps = async (
-//   context: GetStaticPropsContext
-// ) => {
-//   const { params } = context;
-//   const id = params?.id?.toString();
-
-//   if (!id)
-//     return {
-//       notFound: true,
-//     };
-
-//   const user = await getUser(id);
-//   if (!user)
-//     return {
-//       notFound: true,
-//     };
-
-//   return {
-//     props: { user },
-//     revalidate: 30,
-//   };
-// };
-
-// export const getStaticPaths: GetStaticPaths = async (
-//   context: GetStaticPathsContext
-// ) => {
-//   const users = (await getUsers()) || [];
-
-//   const paths = users.map((user) => ({
-//     params: { id: user.id.toString() },
-//   }));
-
-//   return {
-//     paths,
-//     fallback: false,
-//   };
-// };
-
 const Profile: NextPage<Props> = ({ user, stories }) => {
   const { id, name, image } = user as any;
   const { data: session } = useSession();
@@ -100,7 +62,7 @@ const Profile: NextPage<Props> = ({ user, stories }) => {
       </div>
       <div className="mt-10">
         <h2 className="font-bold text-2xl mb-2">Stories of {name}</h2>
-        {stories ? (
+        {!!stories?.length ? (
           <StoriesGrid stories={stories || []} />
         ) : (
           <p>No stories yet.</p>

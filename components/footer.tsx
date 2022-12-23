@@ -17,20 +17,20 @@ const Footer: FC = () => {
               E-mail
             </a>
             <a
-              href="https://twitter.com/"
+              href="https://borys35.github.io/"
               target="_blank"
               className="link font-bold"
               rel="noreferrer"
             >
-              Twitter
+              Personal Website
             </a>
             <a
-              href="https://behance.net/"
+              href="https://github.com/Borys35/Storyline"
               target="_blank"
               className="link font-bold"
               rel="noreferrer"
             >
-              Behance
+              Project Repo
             </a>
           </div>
         </div>
